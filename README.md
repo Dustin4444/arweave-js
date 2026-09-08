@@ -546,6 +546,9 @@ Fetch a transaction from the connected arweave node. The data and tags are base6
 > **Update since v1.9.0**
 *Due to how the API has evolved over time and with larger transaction support, the `data` field is no longer _guaranteed_ to be returned from the network as part of the transaction json, therefore, it is not recommended that you use this function for fetching data anymore. You should update your applications to use [`arweave.transactions.getData()`](#get-transaction-data) instead, this will handle small transactions, as well as the reassembling of chunks for larger ones, it can also benefit from gateway optimisations.*
 
+> **Note on format 1 transactions**
+*Transactions written before the format 2 upgrade have `'format': 1`. They can still be fetched with this function and checked with `arweave.transactions.verify()`, but format 1 transactions can no longer be created, signed, or posted — `createTransaction`, `sign` and `post` will throw if given one.*
+
 ```js
 const transaction = arweave.transactions.get('hKMMPNh_emBf8v_at1tFzNYACisyMQNcKzeeE1QE9p8').then(transaction => {
   console.log(transaction);
