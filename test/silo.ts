@@ -38,7 +38,14 @@ describe("Silo", function () {
       siloURI
     );
 
+    expect(siloTransaction.data_size).to.equal(
+      siloTransaction.data.byteLength.toString()
+    );
+    expect(siloTransaction.data_size).to.not.equal("0");
+
     await arweave.transactions.sign(siloTransaction, wallet);
+
+    expect(siloTransaction.data_root).to.not.equal("");
 
     const verified = await arweave.transactions.verify(siloTransaction);
 
