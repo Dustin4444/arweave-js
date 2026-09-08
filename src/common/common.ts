@@ -24,7 +24,8 @@ export interface Config {
 }
 
 export interface CreateTransactionInterface {
-  format: 2; // only format 2 transactions can be created
+  /** @deprecated Only format 2 is supported; anything else is rejected. */
+  format: number;
   last_tx: string;
   owner: string;
   tags: Tag[];

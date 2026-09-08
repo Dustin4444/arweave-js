@@ -308,7 +308,6 @@ describe("Transactions", function () {
   it("should refuse to create a format=1 transaction", async function () {
     await expectRejection(
       arweave.createTransaction({
-        // @ts-expect-error format 1 is no longer an accepted input
         format: 1,
         last_tx: "",
         data: "test data",
