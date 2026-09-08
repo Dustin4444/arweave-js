@@ -9,7 +9,7 @@ const siloAccessKey = "BmjRGIsemI77+eQb4zX8";
 const otherSiloAccessKey = "I5/Hxg5a0DVZBlxtLrTq";
 const otherSiloTxId = "TlwKj-xyQ3vhbi0HU7HTWHfgHamDuntDFt7qR57_yqw";
 
-describe("ArQL", function () {
+describe("ArQL (emulated with GQL)", function () {
   this.timeout(30_000);
 
   it("should resolve an equals expression on a tag", async function () {

@@ -3,6 +3,7 @@ import * as crypto from "crypto";
 import Arweave from "../../web";
 import { bufferToString, stringToBuffer } from "../../src/common/lib/utils";
 import "../common/lib/utils";
+import signedV1TxFixture from "../fixtures/signed_v1_tx.json";
 
 const expect = chai.expect;
 
@@ -308,24 +309,8 @@ describe("Silo Web", function () {
     // This is a manually generated silo transaction
     // data = 'something'
     // uri = 'secret.1'
-    const transaction = arweave.transactions.fromRaw({
-      format: 1,
-      last_tx: "Sgmyo7nUqPpVQWUfK72p5yIpd85QQbhGaWAF-I8L6yE",
-      owner:
-        "pJjRtSRLpHUVAKCtWC9pjajI_VEpiPEEAHX0k1B1jrB_jDlZsMJPyGRVX6n7N16vNyDTnKAofC_aNmTFegW-uyJmdxsteO1TXKrR_KJvuv_vACX4N8BkSgplB7mTTALBMNPmiINHXkDSxZEkBxAGV0GyL8pLd2-0X6TG16wDFShyS7rZzW8xFsQYiAp9-g330hPhCV7KBdVFtCxA0h1RifDYloMUwHbAWCTvzm72aLI1nWaLzotcM4cZTTdzw5VTdGtjo9fMdoT7uTqikIIhM3C4f9Ws-ECqjBUXtZFg7q6jYbUcTVNr1o2UFPKbLnDl4vcUZBaeqkL0FWQuo7F1hw36PVm_b9lVVzSVVkeA_HF2tQotkaITyOQmYfTHi1d31m5fwFZje_M-YgeyvOIuiqX4-lIGz8pohTutY3Z5_LKfO_a8jsJL8_jFLqcjSCRvVZSRmQDpzB4hJ9-W89m95DDmZci2wLbxFR8GwekNbpHeeC2EaJorhU0qBn_Hlcxql30fLveycjhSO03bu3MJwN9moT2q0T222iIXutEjpNezt5VzZKao8_JuI3ZnTFy5dM5GYO773TbgUihlVjVQsnv73FFPZaHfaRssK4sfGlBHjItwkzEQe9gOtFhkAFihiw45ppo6FnBkvmNcD59GfteifKPg5oSGYqMWZWcKPt0",
-      tags: [
-        { name: "Q29udGVudC1UeXBl", value: "dGV4dC9odG1s" },
-        { name: "VXNlci1BZ2VudA", value: "QXJ3ZWF2ZURlcGxveS8xLjAuMA" },
-        { name: "U2lsby1WZXJzaW9u", value: "MC4xLjA" },
-      ],
-      target: "",
-      quantity: "0",
-      data: "0HgHqou5BTRNYJIsCciZb2-85Qlg9cYpiHO62KbRCEeX_cjSvn--Cex8uksInemd6FWWkczaqjs3SWzr7BRc0BSjHXxlVHkKuQp7WvRRJeNJPk_nC0KZrjkFSIPLIx_oOSeXigaPSEBSC4ry_5Iygt7z0Dgl7z1eFplIs6MlxKuBwiXfCtlwRDQK_fJlPWZhGjOpNLP5dyOLwMKrvG2dbAOeyAYbr117rn19CiDkTQAI3m2gAcJlXDZTNeA-1rJqb6X73u0AQt4Ao-OkktxdZ1UMfMfXnwdlsAEKK14NiKRbL1UbVRGh1nyWjUl90BP5Qj74L6_CKxQc_us7gxdeUhkzIKr4-LMY4LoCr-l0Law_tIGekkRsqb5oN7JiketqWazgsyo-Gq-0Blvhwh8nww",
-      reward: "349612332",
-      signature:
-        "DJ6V8zXFMvkyNS4nNHxdFgXx1cbMuzQfWdtP_navPG1STMUarYKHWnJvFQqNkFl5CekNql0xTOjY5hWLt2AVxfMWgvvi5498vNUpbFoWxjrVl6fk86ARx2lzYB7iQK4YFIuIQ7MdR0w8Dy836hW7c8gXe_FPRAqOI7J_l8fqUSzaUtlcwLSfvhXJM-2a3WmoGLcg8Gvj53B8-RizvM3BrKQQWrcat78zeOgb-Fzl3PQ_Ej3CiRIDgAYnTxmd7M6jI84uck1gBRjMql42n0F8pQuTgMqzDbeXW2iBuvIE5tYVmUgnNrPjkDedLWe0Hp4KLDQyDY9lO-zIJLpiYCbc7kUfDBontxCCJIy9N8XM9gHqQofCItYAEO4v3B7sXgdSAQzcibnM3j6EhB9-mhiDcKKRuTSvyJh3sBTWHFrnWylfq84JOJLNhR4aZA_UfjkccA7Z-yqoiMI0mOB0HaAEmsa6ZsoLs5C-6vDnGaBCqYeVKKqKizfOQGsc9IuzdsSQwY7yTE-C3Xb3eAgnq0BLn6iUNqFU-mkwHi-c_hpxoR0lY91k98Ra9UhrgFS5m_9x3BhCXNhDaUXb16p0fHKGYSggqgqS3FbEcdOnsQlhw3IFEccFOTvuv1xEoE1zYeZ06q6NkFKMik6soXl9LXXgJgZvpEut_2LaHKtojbWqSkc",
-      id: "S-9ICDleH3PEx9LXVEbguVffe5dHEM0I3wEr_MJidqU",
-    });
+    // Format 1 is read/verify-only: it can no longer be created or signed.
+    const transaction = arweave.transactions.fromRaw(signedV1TxFixture);
 
     const verified = await arweave.transactions.verify(transaction);
 
@@ -352,7 +337,14 @@ describe("Silo Web", function () {
       "my-silo-ref.1"
     );
 
+    expect(transaction.data_size).to.equal(
+      transaction.data.byteLength.toString()
+    );
+    expect(transaction.data_size).to.not.equal("0");
+
     await arweave.transactions.sign(transaction, wallet);
+
+    expect(transaction.data_root).to.not.equal("");
 
     const verified = await arweave.transactions.verify(transaction);
 
@@ -440,7 +432,7 @@ describe("GraphQL", function () {
   });
 });
 
-describe("ArQL", function () {
+describe("ArQL (emulated with GQL)", function () {
   this.timeout(30000);
 
   const siloTxId = "Sgmyo7nUqPpVQWUfK72p5yIpd85QQbhGaWAF-I8L6yE";
