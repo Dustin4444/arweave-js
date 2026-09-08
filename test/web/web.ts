@@ -432,7 +432,7 @@ describe("GraphQL", function () {
   });
 });
 
-describe("ArQL", function () {
+describe("ArQL (emulated with GQL)", function () {
   this.timeout(30000);
 
   const siloTxId = "Sgmyo7nUqPpVQWUfK72p5yIpd85QQbhGaWAF-I8L6yE";
