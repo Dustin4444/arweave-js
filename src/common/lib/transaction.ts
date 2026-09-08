@@ -88,8 +88,7 @@ export interface TransactionInterface {
 
 export default class Transaction
   extends BaseObject
-  implements TransactionInterface
-{
+  implements TransactionInterface {
   public readonly format: number = 2;
   public id: string = "";
   public readonly last_tx: string = "";
@@ -225,6 +224,7 @@ export default class Transaction
 
   public async getSignatureData(): Promise<Uint8Array> {
     switch (this.format) {
+      // Format 1 is retained solely for historic transactions
       case 1:
         let tags = this.tags.reduce((accumulator: Uint8Array, tag: Tag) => {
           return ArweaveUtils.concatBuffers([

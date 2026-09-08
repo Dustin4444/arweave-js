@@ -24,7 +24,7 @@ export interface Config {
 }
 
 export interface CreateTransactionInterface {
-  format: number;
+  format: 2; // only format 2 transactions can be created
   last_tx: string;
   owner: string;
   tags: Tag[];
@@ -95,6 +95,12 @@ export default class Arweave {
 
     Object.assign(transaction, attributes);
 
+    if (attributes.format !== undefined && attributes.format !== 2) {
+      throw new Error(`Only format 2 transactions can be created`);
+    }
+
+    transaction.format = 2;
+
     if (!attributes.data && !(attributes.target && attributes.quantity)) {
       throw new Error(
         `A new Arweave transaction must have a 'data' value, or 'target' and 'quantity' values.`
@@ -152,10 +158,6 @@ export default class Arweave {
     jwk: JWKInterface,
     siloUri: string
   ): Promise<Transaction> {
-    const transaction: Partial<CreateTransactionInterface> = {};
-
-    Object.assign(transaction, attributes);
-
     if (!attributes.data) {
       throw new Error(`Silo transactions must have a 'data' value`);
     }
@@ -170,45 +172,35 @@ export default class Arweave {
       );
     }
 
-    if (attributes.owner == undefined) {
-      if (!jwk || !jwk.n) {
-        throw new Error(
-          `A new Arweave transaction must either have an 'owner' attribute, or you must provide the jwk parameter.`
-        );
-      }
-      transaction.owner = jwk.n;
-    }
-
-    if (attributes.last_tx == undefined) {
-      transaction.last_tx = await this.transactions.getTransactionAnchor();
+    if (attributes.owner == undefined && (!jwk || !jwk.n)) {
+      throw new Error(
+        `A new Arweave transaction must either have an 'owner' attribute, or you must provide the jwk parameter.`
+      );
     }
 
     const siloResource = await this.silo.parseUri(siloUri);
 
-    if (typeof attributes.data == "string") {
-      const encrypted = await this.crypto.encrypt(
-        ArweaveUtils.stringToBuffer(attributes.data),
-        siloResource.getEncryptionKey()
+    const plaintext =
+      typeof attributes.data === "string"
+        ? ArweaveUtils.stringToBuffer(attributes.data)
+        : attributes.data instanceof ArrayBuffer
+          ? new Uint8Array(attributes.data)
+          : attributes.data;
+
+    if (!(plaintext instanceof Uint8Array)) {
+      throw new Error(
+        "Expected data to be a string, Uint8Array or ArrayBuffer"
       );
-      transaction.reward = await this.transactions.getPrice(
-        encrypted.byteLength
-      );
-      transaction.data = ArweaveUtils.bufferTob64Url(encrypted);
     }
 
-    if (attributes.data instanceof Uint8Array) {
-      const encrypted = await this.crypto.encrypt(
-        attributes.data,
-        siloResource.getEncryptionKey()
-      );
-      transaction.reward = await this.transactions.getPrice(
-        encrypted.byteLength
-      );
-      transaction.data = ArweaveUtils.bufferTob64Url(encrypted);
-    }
+    const encrypted = await Arweave.crypto.encrypt(
+      plaintext,
+      siloResource.getEncryptionKey()
+    );
 
-    const siloTransaction = new Transaction(
-      transaction as TransactionInterface
+    const siloTransaction = await this.createTransaction(
+      { ...attributes, data: encrypted },
+      jwk
     );
 
     siloTransaction.addTag("Silo-Name", siloResource.getAccessKey());
@@ -224,7 +216,7 @@ export default class Arweave {
     for (const clause of arqlToClauses(query)) {
       let after: string | undefined;
 
-      for (;;) {
+      for (; ;) {
         const res = await this.api.post("graphql", {
           query: `query($owners: [String!], $recipients: [String!], $tags: [TagFilter!], $after: String) {
             transactions(
