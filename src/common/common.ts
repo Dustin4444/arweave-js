@@ -185,8 +185,8 @@ export default class Arweave {
       typeof attributes.data === "string"
         ? ArweaveUtils.stringToBuffer(attributes.data)
         : attributes.data instanceof ArrayBuffer
-          ? new Uint8Array(attributes.data)
-          : attributes.data;
+        ? new Uint8Array(attributes.data)
+        : attributes.data;
 
     if (!(plaintext instanceof Uint8Array)) {
       throw new Error(
@@ -217,7 +217,7 @@ export default class Arweave {
     for (const clause of arqlToClauses(query)) {
       let after: string | undefined;
 
-      for (; ;) {
+      for (;;) {
         const res = await this.api.post("graphql", {
           query: `query($owners: [String!], $recipients: [String!], $tags: [TagFilter!], $after: String) {
             transactions(
