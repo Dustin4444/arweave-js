@@ -80,7 +80,7 @@
     "opener": "^1.5.2",
     "prettier": "^2.8.1",
     "process": "^0.11.10",
-    "resolve-tspaths": "^0.6.0",
+    "resolve-tspaths": "^0.8.23",
     "rimraf": "^3.0.2",
     "stream-browserify": "^3.0.0",
     "terser-webpack-plugin": "^5.3.3",
